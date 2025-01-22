@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bernardo.dslist_2025.dto.GameListDTO;
+import com.bernardo.dslist_2025.dto.GameMinDTO;
 import com.bernardo.dslist_2025.services.GameListService;
+import com.bernardo.dslist_2025.services.GameService;
 
 // 1 define tipo e endpoint
 @RestController
@@ -19,6 +21,10 @@ public class GameListController {
 	// controller injeta o service
 	@Autowired
 	private GameListService gameListService;
+
+	@Autowired
+	private GameService gameService;
+
 
 	// define tipo de classe para retorno
 	@GetMapping(value = "/{gameId}")
@@ -34,5 +40,11 @@ public class GameListController {
 		return result;
 	}
 	
+	// define tipo de classe para retorno
+	@GetMapping(value = "/{listId}/games")
+	public List<GameMinDTO> findByList(@PathVariable Long listId){
+		List<GameMinDTO> result = gameService.findByList(listId);
+		return result;
+	}
 
 }

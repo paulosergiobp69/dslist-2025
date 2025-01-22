@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bernardo.dslist_2025.dto.GameDTO;
 import com.bernardo.dslist_2025.dto.GameMinDTO;
 import com.bernardo.dslist_2025.entities.Game;
+import com.bernardo.dslist_2025.projections.GameMinProjection;
 import com.bernardo.dslist_2025.repositories.GameRepository;
 
 
@@ -35,6 +36,17 @@ public class GameService {
 	public List<GameMinDTO> findAll(){
 		// cria variavel tipo list game
 		List<Game> result = gameRepository.findAll();
+		// convertendo o retorno da tabela completa game para gameDTO
+		List<GameMinDTO> dto = result.stream().map(x -> new GameMinDTO(x)).toList();
+		return dto;
+		
+	}
+
+	// service retorna sempre DTO
+	@Transactional(readOnly = true) // controla para nao travar o banco durante a consulta: org.springframework.transaction.annotation.Transactional
+	public List<GameMinDTO> findByList(Long listId){
+		// cria variavel tipo list game
+		List<GameMinProjection> result = gameRepository.searchByList(listId);
 		// convertendo o retorno da tabela completa game para gameDTO
 		List<GameMinDTO> dto = result.stream().map(x -> new GameMinDTO(x)).toList();
 		return dto;
